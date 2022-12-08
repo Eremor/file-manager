@@ -1,7 +1,7 @@
 import { argv } from 'process';
 
 export const getUsername = () => {
-  let username = '';
+  let username = 'Anonymous';
   const arrArgs = argv.splice(2);
   if (arrArgs.length > 0) {
     arrArgs.forEach((arg) => {
@@ -9,8 +9,6 @@ export const getUsername = () => {
         username = arg.split('=')[1];
       }
     })
-  } else {
-    username = 'Anonymous';
   }
 
   return username;
