@@ -1,7 +1,9 @@
 import readline from 'readline/promises';
 import { stdin, stdout } from 'process';
 import { homedir } from 'os';
+
 import { getUsername } from './utils/utils.js';
+import { upDir } from './nwd/up.js';
 
 const rl = readline.createInterface({
   input: stdin,
@@ -9,7 +11,7 @@ const rl = readline.createInterface({
 });
 
 const username = getUsername();
-const currentDir = homedir();
+let currentDir = homedir();
 
 // const commands = {
 //   '.exit': () => rl.close(),
@@ -40,6 +42,9 @@ rl.on('line', (line) => {
       break;
     case 'add':
       stdout.write(`create file: ${line} \n`);
+      break;
+    case 'up':
+      currentDir = upDir(currentDir, line);
       break;
   
     default:
