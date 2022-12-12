@@ -2,7 +2,7 @@ import { stdout } from 'process';
 import { sep, join } from 'path';
 
 export const upDir = (currentDir, line) => {
-  if (line.split(' ').length > 1) return stdout.write('Invalid input\n');
+  if (line.split(' ').length > 1) throw new Error();
 
   const pathArr = currentDir.split(sep);
   let newDir = '';

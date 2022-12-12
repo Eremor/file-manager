@@ -21,7 +21,7 @@ let currentDir = homedir();
 stdout.write(`Welcome to the File Manager, ${username}! \n`);
 stdout.write(`You are currently in ${currentDir}! \n`);
 
-rl.on('line', (line) => {
+rl.on('line', async (line) => {
   const command = line.split(' ')[0];
 
   // const arr = Object.keys(commands);
@@ -36,20 +36,24 @@ rl.on('line', (line) => {
   // if(error.length === 0) {
   //   console.log('Invalid input');
   // }
-  switch (command) {
-    case '.exit':
-      rl.close();
-      break;
-    case 'add':
-      stdout.write(`create file: ${line} \n`);
-      break;
-    case 'up':
-      currentDir = upDir(currentDir, line);
-      break;
   
-    default:
-      stdout.write('Invalid input \n');
-      break;
+  try {
+    switch (command) {
+      case '.exit':
+        rl.close();
+        break;
+      case 'up':
+        currentDir = upDir(currentDir, line);
+        break;
+      case 'add':
+        stdout.write(`create file: ${line} \n`);
+        break;
+    
+      default:
+        throw new Error();
+    }
+  } catch (err) {
+    stdout.write('Invalid input \n');
   }
 });
 
