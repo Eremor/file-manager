@@ -13,6 +13,5 @@ export const upDir = (currentDir, line) => {
     newDir = currentDir;
   }
 
-  stdout.write(`You are currently in ${newDir}\n`);
   return newDir;
 }

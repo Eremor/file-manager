@@ -4,10 +4,12 @@ import { homedir } from 'os';
 
 import { getUsername } from './utils/utils.js';
 import { upDir } from './nwd/up.js';
+import { changeDir } from './nwd/cd.js';
 
 const rl = readline.createInterface({
   input: stdin,
   output: stdout,
+  prompt: '> ',
 });
 
 const username = getUsername();
@@ -18,8 +20,10 @@ let currentDir = homedir();
 //   'add': (line) => console.log('create file', line)
 // }
 
-stdout.write(`Welcome to the File Manager, ${username}! \n`);
+stdout.write(`Welcome to the File Manager, ${username}! \n\n`);
 stdout.write(`You are currently in ${currentDir}! \n`);
+
+rl.prompt();
 
 rl.on('line', async (line) => {
   const command = line.split(' ')[0];
@@ -45,6 +49,9 @@ rl.on('line', async (line) => {
       case 'up':
         currentDir = upDir(currentDir, line);
         break;
+      case 'cd':
+        currentDir = await changeDir(currentDir, line);
+        break;
       case 'add':
         stdout.write(`create file: ${line} \n`);
         break;
@@ -55,6 +62,12 @@ rl.on('line', async (line) => {
   } catch (err) {
     stdout.write('Invalid input \n');
   }
+
+  console.log(`You are currently in ${currentDir}\n`);
+  rl.prompt();
 });
 
-rl.on('close', () => stdout.write(`Thank you for using File Manager, ${username}, goodbye!`));
+rl.on('close', () => {
+  console.log(`Thank you for using File Manager, ${username}, goodbye!`);
+  process.exit();
+});
