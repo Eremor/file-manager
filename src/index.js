@@ -5,6 +5,7 @@ import { homedir } from 'os';
 import { getUsername } from './utils/utils.js';
 import { upDir } from './nwd/up.js';
 import { changeDir } from './nwd/cd.js';
+import { showDir } from './nwd/ls.js';
 
 const rl = readline.createInterface({
   input: stdin,
@@ -51,6 +52,9 @@ rl.on('line', async (line) => {
         break;
       case 'cd':
         currentDir = await changeDir(currentDir, line);
+        break;
+      case 'ls':
+        await showDir(currentDir);
         break;
       case 'add':
         stdout.write(`create file: ${line} \n`);
