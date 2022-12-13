@@ -6,6 +6,7 @@ import { getUsername } from './utils/utils.js';
 import { upDir } from './nwd/up.js';
 import { changeDir } from './nwd/cd.js';
 import { showDir } from './nwd/ls.js';
+import { read } from './fs/read.js';
 
 const rl = readline.createInterface({
   input: stdin,
@@ -56,15 +57,18 @@ rl.on('line', async (line) => {
       case 'ls':
         await showDir(currentDir);
         break;
+      case 'cat':
+        await read(currentDir, line);
+        break;
       case 'add':
         stdout.write(`create file: ${line} \n`);
         break;
     
       default:
-        throw new Error();
+        stdout.write('Invalid input \n');
     }
   } catch (err) {
-    stdout.write('Invalid input \n');
+    stdout.write('Operation failed\n');
   }
 
   console.log(`You are currently in ${currentDir}\n`);
