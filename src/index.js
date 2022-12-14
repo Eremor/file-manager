@@ -10,6 +10,7 @@ import { readFile } from './fs/read.js';
 import { createFile } from './fs/create.js';
 import { renameFile } from './fs/rename.js';
 import { copyFile } from './fs/copy.js';
+import { deleteFile } from './fs/delete.js';
 
 const rl = readline.createInterface({
   input: stdin,
@@ -66,11 +67,14 @@ rl.on('line', async (line) => {
       case 'add':
         await createFile(currentDir, line);
         break;
-      case 'rm':
+      case 'rn':
         await renameFile(currentDir, line);
         break;
       case 'cp':
         await copyFile(line);
+        break;
+      case 'rm':
+        await deleteFile(currentDir, line);
         break;
     
       default:
