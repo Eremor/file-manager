@@ -2,7 +2,7 @@ import { lstat } from 'fs/promises';
 import { createReadStream } from 'fs';
 import { sep, join } from 'path';
 
-export const read = async (currentDir, line) => {
+export const readFile = async (currentDir, line) => {
   const path = line.slice(4);
   const pathArr = path.trim().split(sep);
   const pathToFile = (pathArr.length === 1 && pathArr[0].includes('.')) ? join(currentDir, ...pathArr) : path;

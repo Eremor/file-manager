@@ -6,7 +6,8 @@ import { getUsername } from './utils/utils.js';
 import { upDir } from './nwd/up.js';
 import { changeDir } from './nwd/cd.js';
 import { showDir } from './nwd/ls.js';
-import { read } from './fs/read.js';
+import { readFile } from './fs/read.js';
+import { createFile } from './fs/create.js';
 
 const rl = readline.createInterface({
   input: stdin,
@@ -58,10 +59,10 @@ rl.on('line', async (line) => {
         await showDir(currentDir);
         break;
       case 'cat':
-        await read(currentDir, line);
+        await readFile(currentDir, line);
         break;
       case 'add':
-        stdout.write(`create file: ${line} \n`);
+        await createFile(currentDir, line);
         break;
     
       default:
@@ -77,5 +78,5 @@ rl.on('line', async (line) => {
 
 rl.on('close', () => {
   console.log(`Thank you for using File Manager, ${username}, goodbye!`);
-  process.exit();
+  process.exit(0);
 });
