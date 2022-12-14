@@ -10,6 +10,7 @@ import { readFile } from './fs/read.js';
 import { createFile } from './fs/create.js';
 import { renameFile } from './fs/rename.js';
 import { copyFile } from './fs/copy.js';
+import { moveFile } from './fs/move.js';
 import { deleteFile } from './fs/delete.js';
 
 const rl = readline.createInterface({
@@ -72,6 +73,9 @@ rl.on('line', async (line) => {
         break;
       case 'cp':
         await copyFile(line);
+        break;
+      case 'mv':
+        await moveFile(currentDir, line);
         break;
       case 'rm':
         await deleteFile(currentDir, line);
