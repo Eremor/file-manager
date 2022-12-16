@@ -12,6 +12,7 @@ import { renameFile } from './fs/rename.js';
 import { copyFile } from './fs/copy.js';
 import { moveFile } from './fs/move.js';
 import { deleteFile } from './fs/delete.js';
+import { getOSInfo } from './os/os.js';
 
 const rl = readline.createInterface({
   input: stdin,
@@ -79,6 +80,9 @@ rl.on('line', async (line) => {
         break;
       case 'rm':
         await deleteFile(currentDir, line);
+        break;
+      case 'os':
+        await getOSInfo(line);
         break;
     
       default:

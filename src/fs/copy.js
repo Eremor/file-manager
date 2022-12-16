@@ -18,6 +18,8 @@ export const copyFile = async (line) => {
     await access(oldPath, constants.F_OK).catch(() => { throw new Error() });
     await access(args[1], constants.F_OK).catch(() => { throw new Error() });
 
+    //!-- добавить проверку на не директорию
+
     const rs = createReadStream(oldPath);
     const ws = createWriteStream(newPath);
 
