@@ -14,6 +14,8 @@ import { moveFile } from './fs/move.js';
 import { deleteFile } from './fs/delete.js';
 import { getOSInfo } from './os/os.js';
 import { hashFile } from './hash/hash.js';
+import { compress } from './zip/compress.js';
+import { decompress } from './zip/decompress.js';
 
 const rl = readline.createInterface({
   input: stdin,
@@ -69,6 +71,12 @@ rl.on('line', async (line) => {
         break;
       case 'hash':
         await hashFile(currentDir, args);
+        break;
+      case 'compress':
+        await compress(currentDir, args);
+        break;
+      case 'decompress':
+        await decompress(currentDir, args);
         break;
     
       default:
