@@ -13,8 +13,8 @@ export const decompress = async (currentDir, args) => {
   const pathToFile = normalizePath(currentDir, args[1] || currentDir);
 
   try {
-    checkFile(path);
-    checkDirectory(pathToFile);
+    await checkFile(path);
+    await checkDirectory(pathToFile);
 
     const rs = createReadStream(path);
     const brotli = createBrotliDecompress();
@@ -23,13 +23,7 @@ export const decompress = async (currentDir, args) => {
     pipeline(
       rs,
       brotli,
-      ws,
-      (err) => {
-        if (err) {
-          console.log(err);
-          throw new Error();
-        }
-      }
+      ws
     );
   } catch (error) {
     throw new Error();

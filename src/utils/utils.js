@@ -1,5 +1,5 @@
 import { argv } from 'process';
-import { stat } from 'fs/promises';
+import { stat, access, constants } from 'fs/promises';
 import { isAbsolute, join } from 'path';
 
 const quotes = {
@@ -47,7 +47,8 @@ const extractArgs = (line, sep) => {
 
 export const checkFile = async (path) => {
   try {
-    const file = await stat(path).catch(() => { throw new Error() });
+    await access(path, constants.F_OK);
+    const file = await stat(path);
   
     if (!file.isFile()) throw new Error();
   } catch (error) {
@@ -57,7 +58,8 @@ export const checkFile = async (path) => {
 
 export const checkDirectory = async (path) => {
   try {
-    const dir = await stat(path).catch(() => { throw new Error() });
+    await access(path, constants.F_OK);
+    const dir = await stat(path);
 
     if(dir.isFile()) throw new Error();
   } catch (error) {

@@ -11,11 +11,10 @@ export const compress = async (currentDir, args) => {
   const dir = path.split(sep);
   const fileName = dir[dir.length - 1];
   const pathToArchive = normalizePath(currentDir, args[1] || currentDir);
-  console.log(path, pathToArchive);
 
   try {
-    checkFile(path);
-    checkDirectory(pathToArchive);
+    await checkFile(path);
+    await checkDirectory(pathToArchive);
 
     const rs = createReadStream(path);
     const brotli = createBrotliCompress();
@@ -24,13 +23,7 @@ export const compress = async (currentDir, args) => {
     pipeline(
       rs,
       brotli,
-      ws,
-      (err) => {
-        if (err) {
-          console.log(err);
-          throw new Error();
-        }
-      }
+      ws
     );
   } catch (error) {
     throw new Error();
