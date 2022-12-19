@@ -1,29 +1,26 @@
 import { join, sep } from 'path';
-import { lstat } from 'fs/promises';
 import { upDir } from './up.js';
+import { normalizePath, checkDirectory } from '../utils/utils.js'
 
-export const changeDir = async (currentDir, line) => {
+export const changeDir = async (currentDir, args) => {
   let newDir = currentDir;
 
+  if (args.length > 1) throw new Error();
+
   try {
-    const path = line.slice(3);
-  
-    if (path.length < 2) throw new Error();
-  
-
-    if (path === '..') {
-      return upDir(currentDir, 'up');
+    if (args[0] === '..') {
+      return upDir(currentDir, []);
     }
 
-    const sd = await lstat(path).catch(() => { throw new Error() });
+    const path = normalizePath(currentDir, args[0]);
 
-    if (!sd.isFile()) {
-      const pathArr = path.trim().split(sep);
-      newDir = join(...pathArr);
-    }
+    await checkDirectory(path);
+
+    const sepPath = path.split(sep);
+    newDir = join(...sepPath);
   } catch (error) {
-    console.log('Invalid input \n');
+    throw new Error();
   }
 
-  return await newDir;
+  return newDir;
 }

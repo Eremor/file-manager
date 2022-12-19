@@ -1,24 +1,25 @@
-import { join, sep } from 'path';
+import { join as pathJoin, sep } from 'path';
 import { access, constants } from 'fs/promises';
 import { createReadStream, createWriteStream } from 'fs';
 import { pipeline } from 'stream';
+import { normalizePath, checkDirectory, checkFile } from '../utils/utils.js';
 
-export const copyFile = async (line) => {
-  const lineArgs = line.slice(3);
-  const args = lineArgs.split(' ');
-  
+export const copyFile = async (currentDir, args) => {  
   if (args.length > 2) throw new Error();
 
-  const oldPathArr = args[0].split(sep);
-  const fileName = oldPathArr[oldPathArr.length - 1];
-  const oldPath = args[0];
-  const newPath = join(args[1], fileName);
+  const path = normalizePath(currentDir, args[0]);
+  const pathToNewDir = normalizePath(currentDir, args[1]);
+  const dir = path.split(sep);
+  const fileName = dir[dir.length - 1];
+  const oldPath = path;
+  const newPath = pathJoin(pathToNewDir, fileName);
 
   try {
-    await access(oldPath, constants.F_OK).catch(() => { throw new Error() });
-    await access(args[1], constants.F_OK).catch(() => { throw new Error() });
+    await checkFile(oldPath);
+    await checkDirectory(pathToNewDir);
 
-    //!-- добавить проверку на не директорию
+    await access(oldPath, constants.F_OK).catch(() => { throw new Error() });
+    await access(pathToNewDir, constants.F_OK).catch(() => { throw new Error() });
 
     const rs = createReadStream(oldPath);
     const ws = createWriteStream(newPath);

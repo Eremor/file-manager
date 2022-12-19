@@ -1,22 +1,16 @@
-import { join, sep } from 'path';
 import { rm, access, constants, stat } from 'fs/promises';
+import { normalizePath, checkFile } from '../utils/utils.js';
 
-export const deleteFile = async (currentDir, line) => {
-  const args = line.split(' ');
+export const deleteFile = async (currentDir, args) => {
+  if (args.length > 1) throw new Error();
 
-  if (args.length > 2) throw new Error();
-
-  const path = args[1].split(sep);
-  const fileName = path.pop();
-  const pathToFile = path.length > 0 ? join(...path, fileName) : join(currentDir, fileName);
+  const path = normalizePath(currentDir, args[0]);
 
   try {
-    await access(pathToFile, constants.F_OK).catch(() => { throw new Error() });
+    await checkFile(path);
+    await access(path, constants.F_OK).catch(() => { throw new Error() });
 
-    const file = await stat(pathToFile);
-    if (!file.isFile()) throw new Error();
-
-    rm(pathToFile);
+    rm(path);
   } catch (error) {
     throw new Error();
   }

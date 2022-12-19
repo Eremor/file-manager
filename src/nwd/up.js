@@ -1,7 +1,7 @@
 import { sep, join } from 'path';
 
-export const upDir = (currentDir, line) => {
-  if (line.split(' ').length > 1) throw new Error();
+export const upDir = (currentDir, args) => {
+  if (args.length > 0) throw new Error();
 
   const pathArr = currentDir.split(sep);
   let newDir = currentDir;

@@ -1,4 +1,6 @@
 import { argv } from 'process';
+import { stat } from 'fs/promises';
+import { isAbsolute, join } from 'path';
 
 const quotes = {
   single: '\'',
@@ -42,3 +44,25 @@ const extractArgs = (line, sep) => {
 
   return [command, argsAsArray]
 }
+
+export const checkFile = async (path) => {
+  try {
+    const file = await stat(path).catch(() => { throw new Error() });
+  
+    if (!file.isFile()) throw new Error();
+  } catch (error) {
+    throw new Error();
+  }
+}
+
+export const checkDirectory = async (path) => {
+  try {
+    const dir = await stat(path).catch(() => { throw new Error() });
+
+    if(dir.isFile()) throw new Error();
+  } catch (error) {
+    throw new Error();
+  }
+}
+
+export const normalizePath = (currentDir, path) => isAbsolute(path) ? path : join(currentDir, path)

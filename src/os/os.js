@@ -2,11 +2,11 @@ import { EOL, cpus, homedir, userInfo, arch } from 'os';
 
 const MHZ = 1000;
 
-export const getOSInfo = async (line) => {
-  const args = line.slice(3);
+export const getOSInfo = async (args) => {
+  if (args.length > 1) throw new Error();
 
-  if (args.includes('--')) {
-    switch (args.slice(2)) {
+  if (args[0].includes('--')) {
+    switch (args[0].slice(2)) {
       case 'EOL':
         console.log(`Default EOL: ${JSON.stringify(EOL)}\n`);
         break;

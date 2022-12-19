@@ -1,21 +1,16 @@
-import { lstat } from 'fs/promises';
 import { createReadStream } from 'fs';
-import { sep, join } from 'path';
+import { normalizePath, checkFile } from '../utils/utils.js';
 
-export const readFile = async (currentDir, line) => {
-  const path = line.slice(4);
-  const pathArr = path.trim().split(sep);
-  const pathToFile = (pathArr.length === 1 && pathArr[0].includes('.')) ? join(currentDir, ...pathArr) : path;
+export const readFile = async (currentDir, args) => {
+  if (args.length > 1) throw new Error();
 
-  const sd = await lstat(pathToFile);
+  const path = normalizePath(currentDir, args[0]);
 
-  if (!sd.isFile()) {
-    throw new Error();
-  }
+  await checkFile(path);
 
   return new Promise((res, rej) => {
     try {
-      const rs = createReadStream(pathToFile);
+      const rs = createReadStream(path);
       rs.on('data', (chunk) => process.stdout.write(chunk.toString()+ '\n'));
       rs.on('end', () => res());
     } catch (error) {

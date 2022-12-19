@@ -1,23 +1,21 @@
-import { join } from 'path';
 import { access, constants } from 'fs/promises';
 import { createWriteStream } from 'fs';
+import { normalizePath } from '../utils/utils.js';
 
-export const createFile = async (currentDir, line) => {
-  const pathArr = line.split(' ');
+export const createFile = async (currentDir, args) => {
+  if (args.length > 1) throw new Error();
 
-  if (pathArr.length > 2) throw new Error();
+  const path = normalizePath(currentDir, args[0]);
 
-  const fileName = pathArr[1];
-  const pathToFile = join(currentDir, fileName);
   let isExist = false;
 
   try {
-    await access(pathToFile, constants.F_OK)
+    await access(path, constants.F_OK)
       .then(() => isExist = false)
       .catch(() => isExist = true);
     
     if (isExist) {
-      const ws = createWriteStream(pathToFile);
+      const ws = createWriteStream(path);
       ws.close();
     } else {
       throw new Error();

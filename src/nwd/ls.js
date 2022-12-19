@@ -1,7 +1,9 @@
 import { readdir } from 'fs/promises';
 import { join, sep } from 'path';
 
-export const showDir = async (currentDir) => {
+export const showDir = async (currentDir, args) => {
+  if (args.length > 0) throw new Error();
+
   const cd = currentDir.split(sep);
 
   try {

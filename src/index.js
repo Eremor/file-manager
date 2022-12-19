@@ -29,9 +29,7 @@ stdout.write(`You are currently in ${currentDir}! \n`);
 rl.prompt();
 
 rl.on('line', async (line) => {
-  const [cmd, args] = lineParser(line);
-
-  const command = line.split(' ')[0];
+  const [command, args] = lineParser(line);
 
   try {
     switch (command) {
@@ -39,34 +37,34 @@ rl.on('line', async (line) => {
         rl.close();
         break;
       case 'up':
-        currentDir = upDir(currentDir, line);
+        currentDir = upDir(currentDir, args);
         break;
       case 'cd':
-        currentDir = await changeDir(currentDir, line);
+        currentDir = await changeDir(currentDir, args);
         break;
       case 'ls':
-        await showDir(currentDir);
+        await showDir(currentDir, args);
         break;
       case 'cat':
-        await readFile(currentDir, line);
+        await readFile(currentDir, args);
         break;
       case 'add':
-        await createFile(currentDir, line);
+        await createFile(currentDir, args);
         break;
       case 'rn':
-        await renameFile(currentDir, line);
+        await renameFile(currentDir, args);
         break;
       case 'cp':
-        await copyFile(line);
+        await copyFile(currentDir, args);
         break;
       case 'mv':
-        await moveFile(currentDir, line);
+        await moveFile(currentDir, args);
         break;
       case 'rm':
-        await deleteFile(currentDir, line);
+        await deleteFile(currentDir, args);
         break;
       case 'os':
-        await getOSInfo(line);
+        await getOSInfo(args);
         break;
     
       default:
