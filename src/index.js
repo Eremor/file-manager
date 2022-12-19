@@ -13,6 +13,7 @@ import { copyFile } from './fs/copy.js';
 import { moveFile } from './fs/move.js';
 import { deleteFile } from './fs/delete.js';
 import { getOSInfo } from './os/os.js';
+import { hashFile } from './hash/hash.js';
 
 const rl = readline.createInterface({
   input: stdin,
@@ -65,6 +66,9 @@ rl.on('line', async (line) => {
         break;
       case 'os':
         await getOSInfo(args);
+        break;
+      case 'hash':
+        await hashFile(currentDir, args);
         break;
     
       default:
